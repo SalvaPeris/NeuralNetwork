@@ -53,12 +53,19 @@ namespace NeuralNetwork
             for (var i = 0; i < interactions; i++)
             {
                 var output = GetOutput(trainInputMatrix);
-
+                Matrix.Print(output);
                 //error = target - currentOutput
                 var error = Matrix.Substract(trainOutputMatrix, output);
+                Matrix.Print(error);
+                // Multiply the error by the input and again by the gradient of the Sigmoid curve.
+                // This means less confident weights are adjusted more.
+                // This means inputs, which are zero, do not cause changes to the weights.
                 var curSigmoidDerivative = Sigmoid.GetDerivative(output);
+                Matrix.Print(curSigmoidDerivative);
                 var errorSigmoidDerivative = Matrix.Product(error, curSigmoidDerivative);
+                Matrix.Print(errorSigmoidDerivative);
                 var adjustment = Matrix.DotProduct(Matrix.Transpose(trainInputMatrix), errorSigmoidDerivative);
+                Matrix.Print(adjustment);
 
                 SynapsesMatrix = Matrix.Sum(SynapsesMatrix, adjustment);
             }
